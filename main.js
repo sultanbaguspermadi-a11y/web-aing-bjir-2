@@ -1,195 +1,242 @@
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
 
 const copy = {
-  id:{
-    eyebrow:'KARYA PILIHAN · 2026', h1:'MEDIA PEMBELAJARAN', h2:'BAHASA ARAB', h3:'& EKSPERIMEN DIGITAL',
-    desc:'Portofolio akademik dan interaktif yang mengeksplorasi pembelajaran bahasa Arab, teknologi pendidikan, dan desain antarmuka.',
-    projects:'PROYEK',about:'TENTANG',hint:'Gunakan ↑ ↓ dan ENTER, atau klik.',status:'READY / DUA PROYEK UTAMA',works:'KARYA PILIHAN',back:'KEMBALI',
-    lughoti:'Kamus digital bahasa Arab untuk siswa SMK dengan kosakata berbasis bidang keahlian dan pengalaman mobile-first.',
-    lughotiMeta:['Pembelajaran Arab','EdTech','Web App'],scrabble:'Permainan papan kata bahasa Arab yang dapat dikonfigurasi, berfokus pada multiplayer lokal, interaksi huruf, dan fleksibilitas layout.',
-    scrabbleMeta:['Permainan Kata Arab','Media Pembelajaran','Multiplayer Lokal'],open:'BUKA PROYEK ↗',nav:'NAVIGASI',hudOpen:'BUKA',
-    aboutK:'TENTANG KARYA',aboutAr:'بين اللغة والتقنية',aboutTitle:'Bahasa,\nteknologi,\ndan pengalaman belajar.',
-    aboutBody:'Saya merancang dan mengembangkan pengalaman belajar digital yang berfokus terutama pada pembelajaran bahasa Arab. Proyek saya menggabungkan desain pembelajaran, media pendidikan, pengembangan web, dan eksperimen antarmuka.',
-    focus:['Pendidikan Bahasa Arab','Teknologi Pendidikan','Interactive Learning','UI / UX Experimentation']
+  id: {
+    homeEyebrow:'ARABIC LEARNING MEDIA / 2026',
+    homeTitle:'KARYA\nPILIHAN',
+    homeArabic:'أعمال رقمية',
+    homeDescription:'Media pembelajaran bahasa Arab, teknologi pendidikan, dan eksperimen antarmuka dalam satu pengalaman digital.',
+    menuProjects:'PROYEK',
+    menuAbout:'TENTANG',
+    homeCaption:'PENDIDIKAN BAHASA ARAB DIGITAL',
+    projectsHeading:'PROYEK',
+    cardMeta1:'Kamus Digital Bahasa Arab Vokasi',
+    cardMeta2:'Permainan Papan Kata Arab',
+    lughotiKicker:'KAMUS DIGITAL BAHASA ARAB VOKASI',
+    lughotiDesc:'Kamus digital bahasa Arab untuk siswa SMK dengan kosakata berbasis bidang keahlian dan pengalaman mobile-first.',
+    scrabbleKicker:'PERMAINAN PAPAN KATA ARAB',
+    scrabbleDesc:'Permainan papan kata bahasa Arab yang dapat dikonfigurasi, berfokus pada multiplayer lokal, interaksi huruf Arab, dan layout fleksibel.',
+    open:'BUKA PROYEK ↗',
+    aboutHeading:'TENTANG',
+    aboutArabic:'بين اللغة والتقنية',
+    aboutTitle:'Bahasa,\nteknologi,\npembelajaran.',
+    aboutBody:'Saya merancang pengalaman belajar digital yang berfokus pada pembelajaran bahasa Arab. Proyek saya menggabungkan desain pembelajaran, media pendidikan, pengembangan web, dan eksperimen antarmuka.',
+    focus:['Pendidikan Bahasa Arab','Teknologi Pendidikan','Interactive Learning','UI / UX Experimentation'],
+    nav:'Navigasi',confirm:'Pilih',back:'Kembali'
   },
-  en:{
-    eyebrow:'SELECTED WORKS · 2026',h1:'ARABIC LEARNING',h2:'MEDIA',h3:'& DIGITAL EXPERIMENTS',
-    desc:'Selected academic and interactive projects exploring Arabic education, educational technology, and interface design.',projects:'PROJECTS',about:'ABOUT',hint:'Use ↑ ↓ and ENTER, or click.',status:'READY / TWO FLAGSHIP PROJECTS',works:'SELECTED WORKS',back:'BACK',
-    lughoti:'A digital Arabic dictionary for vocational high-school students, with field-specific vocabulary and a mobile-first learning experience.',lughotiMeta:['Arabic Learning','EdTech','Web App'],
-    scrabble:'A configurable Arabic word-board game focused on local multiplayer, Arabic-letter interaction, and flexible layouts.',scrabbleMeta:['Arabic Word Game','Learning Media','Local Multiplayer'],open:'OPEN PROJECT ↗',nav:'NAVIGATE',hudOpen:'OPEN',
-    aboutK:'ABOUT THE WORK',aboutAr:'بين اللغة والتقنية',aboutTitle:'Language,\ntechnology,\nand learning experiences.',
-    aboutBody:'I design and develop digital learning experiences focused primarily on Arabic language education. My projects combine instructional design, educational media, web development, and interface experimentation.',
-    focus:['Arabic Education','Educational Technology','Interactive Learning','UI / UX Experimentation']
+  en: {
+    homeEyebrow:'ARABIC LEARNING MEDIA / 2026',
+    homeTitle:'SELECTED\nWORKS',
+    homeArabic:'أعمال رقمية',
+    homeDescription:'Arabic learning media, educational technology, and interface experiments presented as one interactive digital experience.',
+    menuProjects:'PROJECTS',
+    menuAbout:'ABOUT',
+    homeCaption:'DIGITAL ARABIC EDUCATION',
+    projectsHeading:'PROJECTS',
+    cardMeta1:'Vocational Arabic Digital Dictionary',
+    cardMeta2:'Arabic Word Board Game',
+    lughotiKicker:'VOCATIONAL ARABIC DIGITAL DICTIONARY',
+    lughotiDesc:'A digital Arabic dictionary for vocational high-school students, organizing vocabulary around specific vocational fields through a mobile-first experience.',
+    scrabbleKicker:'ARABIC WORD BOARD GAME',
+    scrabbleDesc:'A configurable Arabic word-board game focused on local multiplayer, Arabic-letter interaction, and flexible layouts.',
+    open:'OPEN PROJECT ↗',
+    aboutHeading:'ABOUT',
+    aboutArabic:'بين اللغة والتقنية',
+    aboutTitle:'Language,\ntechnology,\nlearning.',
+    aboutBody:'I design digital learning experiences focused primarily on Arabic language education. My projects combine instructional design, educational media, web development, and interface experimentation.',
+    focus:['Arabic Education','Educational Technology','Interactive Learning','UI / UX Experimentation'],
+    nav:'Navigate',confirm:'Confirm',back:'Back'
   },
-  ar:{
-    eyebrow:'الأعمال المختارة · 2026',h1:'وسائط تعليم',h2:'اللغة العربية',h3:'والتجارب الرقمية',
-    desc:'مجموعة من المشاريع الأكاديمية والتفاعلية التي تستكشف تعليم اللغة العربية، والتقنية التعليمية، وتصميم الواجهات.',projects:'المشاريع',about:'عن الأعمال',hint:'استخدم ↑ ↓ و ENTER أو انقر.',status:'جاهز / مشروعان رئيسيان',works:'الأعمال المختارة',back:'رجوع',
-    lughoti:'قاموس رقمي للغة العربية صُمِّم لطلاب المدارس الثانوية المهنية، وينظّم المفردات وفق مجالات التخصص ضمن تجربة تعليمية للأجهزة المحمولة.',lughotiMeta:['تعليم العربية','تقنية تعليمية','تطبيق ويب'],
-    scrabble:'لعبة كلمات عربية على لوحة قابلة للتخصيص، تركّز على اللعب الجماعي المحلي، والتفاعل مع الحروف العربية، والتخطيطات المرنة.',scrabbleMeta:['لعبة كلمات عربية','وسائط تعليمية','لعب جماعي محلي'],open:'فتح المشروع ↗',nav:'تنقّل',hudOpen:'فتح',
-    aboutK:'عن الأعمال',aboutAr:'بين اللغة والتقنية',aboutTitle:'اللغة،\nوالتقنية،\nوتجارب التعلّم.',
-    aboutBody:'أصمّم وأطوّر تجارب تعلّم رقمية تركّز بصورة أساسية على تعليم اللغة العربية. تجمع مشاريعي بين التصميم التعليمي، والوسائط التعليمية، وتطوير الويب، والتجريب في تصميم الواجهات.',
-    focus:['تعليم اللغة العربية','التقنية التعليمية','التعلّم التفاعلي','تجريب الواجهات وتجربة المستخدم']
+  ar: {
+    homeEyebrow:'وسائط تعليم اللغة العربية / 2026',
+    homeTitle:'الأعمال\nالمختارة',
+    homeArabic:'أعمال رقمية',
+    homeDescription:'وسائط تعليم اللغة العربية، والتقنية التعليمية، وتجارب تصميم الواجهات ضمن تجربة رقمية تفاعلية واحدة.',
+    menuProjects:'المشاريع',
+    menuAbout:'عن الأعمال',
+    homeCaption:'التعليم الرقمي للغة العربية',
+    projectsHeading:'المشاريع',
+    cardMeta1:'قاموس رقمي للعربية المهنية',
+    cardMeta2:'لعبة كلمات عربية على لوحة',
+    lughotiKicker:'قاموس رقمي للعربية المهنية',
+    lughotiDesc:'قاموس رقمي للغة العربية صُمم لطلاب المدارس الثانوية المهنية، وينظم المفردات وفق مجالات التخصص ضمن تجربة موجهة للأجهزة المحمولة.',
+    scrabbleKicker:'لعبة كلمات عربية على لوحة',
+    scrabbleDesc:'لعبة كلمات عربية قابلة للتخصيص، تركّز على اللعب الجماعي المحلي، والتفاعل مع الحروف العربية، والتخطيطات المرنة.',
+    open:'فتح المشروع ↗',
+    aboutHeading:'عن الأعمال',
+    aboutArabic:'بين اللغة والتقنية',
+    aboutTitle:'اللغة،\nوالتقنية،\nوالتعلّم.',
+    aboutBody:'أصمّم تجارب تعلّم رقمية تركّز بصورة أساسية على تعليم اللغة العربية. تجمع مشاريعي بين التصميم التعليمي، والوسائط التعليمية، وتطوير الويب، وتجريب الواجهات.',
+    focus:['تعليم اللغة العربية','التقنية التعليمية','التعلّم التفاعلي','تجريب الواجهات وتجربة المستخدم'],
+    nav:'تنقّل',confirm:'اختيار',back:'رجوع'
   }
 };
 
-function readStoredLanguage(){
-  try{
-    const stored = localStorage.getItem('portfolio-language');
-    return copy[stored] ? stored : 'id';
-  }catch(error){
-    console.warn('[portfolio] localStorage read unavailable:', error);
-    return 'id';
-  }
-}
+let lang = 'id';
+try {
+  const stored = localStorage.getItem('portfolio-language');
+  if (copy[stored]) lang = stored;
+} catch (_) {}
 
-function storeLanguage(value){
-  try{
-    localStorage.setItem('portfolio-language', value);
-  }catch(error){
-    console.warn('[portfolio] localStorage write unavailable:', error);
-  }
-}
-
-let lang = readStoredLanguage();
-let currentScreen = 'home';
+let currentScreen = 'homeScreen';
 let menuIndex = 0;
 let projectIndex = 0;
-const menuItems = $$('.menu-item');
 
-let bootFinished = false;
+const menuItems = $$('.menu-option');
+const screens = $$('.screen');
+const wipe = $('#wipe');
+const sideNumber = $('#sideNumber');
+const backButton = $('#backButton');
 
-function finishBoot(){
-  if(bootFinished) return;
-  bootFinished = true;
+function safeStoreLanguage(value){
+  try { localStorage.setItem('portfolio-language', value); } catch (_) {}
+}
 
-  const bootScreen = $('#boot');
-  const app = $('#app');
+function setText(id, value, multiline=false){
+  const el = $('#'+id);
+  if(!el) return;
+  if(multiline) el.innerHTML = value.split('\n').join('<br>');
+  else el.textContent = value;
+}
 
-  if(app) app.classList.remove('is-loading');
-  if(bootScreen){
-    bootScreen.classList.add('hide');
-    bootScreen.setAttribute('aria-hidden','true');
+function applyLanguage(next){
+  if(!copy[next]) next = 'id';
+  lang = next;
+  safeStoreLanguage(lang);
 
-    // Animation is decorative; never let it block access to the app.
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  $$('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+  const c = copy[lang];
+  setText('homeEyebrow', c.homeEyebrow);
+  setText('homeTitle', c.homeTitle, true);
+  setText('homeArabic', c.homeArabic);
+  setText('homeDescription', c.homeDescription);
+  setText('menuProjects', c.menuProjects);
+  setText('menuAbout', c.menuAbout);
+  setText('homeCaption', c.homeCaption);
+  setText('projectsHeading', c.projectsHeading);
+  setText('cardMeta1', c.cardMeta1);
+  setText('cardMeta2', c.cardMeta2);
+  setText('lughotiKicker', c.lughotiKicker);
+  setText('lughotiDesc', c.lughotiDesc);
+  setText('scrabbleKicker', c.scrabbleKicker);
+  setText('scrabbleDesc', c.scrabbleDesc);
+  setText('lughotiOpen', c.open);
+  setText('scrabbleOpen', c.open);
+  setText('aboutHeading', c.aboutHeading);
+  setText('aboutArabic', c.aboutArabic);
+  setText('aboutTitle', c.aboutTitle, true);
+  setText('aboutBody', c.aboutBody);
+  c.focus.forEach((text,i)=>setText('focus'+(i+1),text));
+  setText('hudNavigate', c.nav);
+  setText('hudConfirm', c.confirm);
+  setText('hudBack', c.back);
+}
+
+function updateMenu(index){
+  menuIndex = (index + menuItems.length) % menuItems.length;
+  menuItems.forEach((item,i)=>item.classList.toggle('active',i===menuIndex));
+  const num = menuItems[menuIndex].dataset.number || String(menuIndex+1).padStart(2,'0');
+  if(sideNumber){
+    sideNumber.style.opacity = '.025';
+    sideNumber.style.transform = 'translateY(-48%) rotate(-7deg) scale(.98)';
     setTimeout(()=>{
-      bootScreen.style.display = 'none';
-    }, 1100);
+      sideNumber.textContent = num;
+      sideNumber.style.opacity = '';
+      sideNumber.style.transform = '';
+    },120);
   }
 }
 
-function boot(){
-  const bar = $('#bootBar');
-  const pct = $('#bootPct');
+function showScreen(id){
+  if(id === currentScreen) return;
 
-  // Hard failsafe: even if a browser blocks an API or another feature errors,
-  // the loading screen must never trap the visitor.
-  const failsafe = setTimeout(finishBoot, 3200);
+  wipe?.classList.remove('active');
+  if(wipe){ void wipe.offsetWidth; wipe.classList.add('active'); }
 
-  if(!bar || !pct || !$('#boot') || !$('#app')){
-    clearTimeout(failsafe);
-    finishBoot();
-    return;
-  }
+  setTimeout(()=>{
+    screens.forEach(screen=>{
+      const active = screen.id === id;
+      screen.classList.toggle('active',active);
+      screen.setAttribute('aria-hidden',String(!active));
+    });
+    currentScreen = id;
+    backButton.style.display = id === 'homeScreen' ? 'none' : 'block';
+    sideNumber.textContent = id === 'projectsScreen' ? '01' : id === 'aboutScreen' ? '02' : menuItems[menuIndex].dataset.number || '01';
+  },280);
 
-  let p = 0;
-  const timer = setInterval(()=>{
-    p = Math.min(100, p + Math.ceil(Math.random()*9));
-    bar.style.width = p + '%';
-    pct.textContent = p + '%';
-
-    if(p >= 100){
-      clearInterval(timer);
-      setTimeout(()=>{
-        clearTimeout(failsafe);
-        finishBoot();
-      }, 220);
-    }
-  }, 55);
+  setTimeout(()=>wipe?.classList.remove('active'),820);
 }
 
-function setLang(next){
-  lang=copy[next] ? next : 'id'; storeLanguage(lang);
-  document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr';
-  $$('.lang').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-  const c=copy[lang];
-  const map={heroEyebrow:c.eyebrow,heroLine1:c.h1,heroLine2:c.h2,heroLine3:c.h3,heroDesc:c.desc,menuProjects:c.projects,menuAbout:c.about,menuHint:c.hint,statusCopy:c.status,worksTitle:c.works,backProjects:c.back,backAbout:c.back,lughotiDesc:c.lughoti,scrabbleDesc:c.scrabble,lughotiOpen:c.open,scrabbleOpen:c.open,hudNavigate:c.nav,hudOpen:c.hudOpen,hudBack:c.back,aboutKicker:c.aboutK,aboutArabic:c.aboutAr,aboutBody:c.aboutBody};
-  Object.entries(map).forEach(([id,val])=>{
-    const el=$('#'+id);
-    if(el){
-      if(typeof el.animate === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches){
-        el.animate(
-          [{opacity:.2,transform:'translateY(6px)'},{opacity:1,transform:'none'}],
-          {duration:320,easing:'ease-out'}
-        );
-      }
-      el.textContent=val;
-    }
+function activateMenu(){
+  const item = menuItems[menuIndex];
+  const target = item.dataset.target;
+  if(target) showScreen(target);
+  else if(item.href) window.open(item.href,'_blank','noopener,noreferrer');
+}
+
+function updateProject(index){
+  projectIndex = (index + 2) % 2;
+  $$('.project-card').forEach((card,i)=>{
+    card.classList.toggle('active',i===projectIndex);
+    card.setAttribute('aria-selected',String(i===projectIndex));
   });
-  $('#aboutTitle').innerHTML=c.aboutTitle.replaceAll('\n','<br>');
-  const lm=$('#lughotiMeta'), sm=$('#scrabbleMeta');lm.innerHTML=c.lughotiMeta.map(x=>`<span>${x}</span>`).join('');sm.innerHTML=c.scrabbleMeta.map(x=>`<span>${x}</span>`).join('');
-  c.focus.forEach((x,i)=>$('#focus'+['One','Two','Three','Four'][i]).textContent=x);
+  $$('.project-detail').forEach((detail,i)=>detail.classList.toggle('active',i===projectIndex));
 }
 
-function updateMenu(i){ menuIndex=(i+menuItems.length)%menuItems.length;menuItems.forEach((el,n)=>el.classList.toggle('active',n===menuIndex));const idx=menuItems[menuIndex].dataset.index||String(menuIndex+1).padStart(2,'0');const bi=$('#bigIndex');bi.style.transform='translateY(10px)';bi.style.opacity=.2;setTimeout(()=>{bi.textContent=idx;bi.style.transform='none';bi.style.opacity=1},120)}
-
-function transitionTo(id){ if(id===currentScreen)return;const tr=$('#transition');tr.classList.remove('active');void tr.offsetWidth;tr.classList.add('active');setTimeout(()=>{ $$('.screen').forEach(s=>{s.classList.remove('active');s.setAttribute('aria-hidden','true')});const next=$('#'+id);next.classList.add('active');next.setAttribute('aria-hidden','false');currentScreen=id; },300);setTimeout(()=>tr.classList.remove('active'),800)}
-
-function openCurrentMenu(){ const el=menuItems[menuIndex]; const target=el.dataset.target;if(target) transitionTo(target);else if(el.href) window.open(el.href,'_blank');}
-
-function setProject(i){ projectIndex=(i+2)%2;$$('.project-tab').forEach((b,n)=>{b.classList.toggle('active',n===projectIndex);b.setAttribute('aria-selected',n===projectIndex)});$$('.project-panel').forEach((p,n)=>p.classList.toggle('active',n===projectIndex));}
-
-$$('.lang').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
-$$('.menu-item[data-target]').forEach((b,i)=>{b.addEventListener('mouseenter',()=>updateMenu(i));b.addEventListener('click',()=>transitionTo(b.dataset.target))});
-$$('[data-back]').forEach(b=>b.addEventListener('click',()=>transitionTo('home')));
-$$('.project-tab').forEach((b,i)=>b.addEventListener('click',()=>setProject(i)));
-$('#brandBtn').addEventListener('click',()=>transitionTo('home'));
-
-document.addEventListener('keydown',e=>{
-  if(currentScreen==='home'){
-    if(e.key==='ArrowDown'){e.preventDefault();updateMenu(menuIndex+1)}
-    if(e.key==='ArrowUp'){e.preventDefault();updateMenu(menuIndex-1)}
-    if(e.key==='Enter'){e.preventDefault();openCurrentMenu()}
-  } else if(currentScreen==='projects'){
-    if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();setProject(projectIndex+1)}
-    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();setProject(projectIndex-1)}
-    if(e.key==='Enter'){ const link=$$('.project-panel')[projectIndex].querySelector('.project-actions a'); if(link) window.open(link.href,'_blank') }
+menuItems.forEach((item,i)=>{
+  item.addEventListener('mouseenter',()=>updateMenu(i));
+  if(item.dataset.target){
+    item.addEventListener('click',()=>showScreen(item.dataset.target));
   }
-  if(e.key==='Escape'&&currentScreen!=='home') transitionTo('home');
 });
 
-// restrained pointer parallax on desktop
-if(matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches){
-  document.addEventListener('pointermove',e=>{const x=(e.clientX/innerWidth-.5),y=(e.clientY/innerHeight-.5);$('.orb-a').style.transform=`translate(${x*22}px,${y*18}px)`;$('.orb-b').style.transform=`translate(${-x*16}px,${-y*12}px)`;const activeVisual=$('.project-panel.active .project-visual');if(activeVisual) activeVisual.style.transform=`perspective(1200px) rotateX(${y*-1.4}deg) rotateY(${x*1.8}deg)`;});
-}
+$$('.project-card').forEach((card,i)=>{
+  card.addEventListener('mouseenter',()=>updateProject(i));
+  card.addEventListener('click',()=>updateProject(i));
+});
 
-function initializeApp(){
-  // Start the boot sequence first so localization or optional interactions
-  // cannot leave the visitor stuck behind the loader.
-  boot();
+$$('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>applyLanguage(btn.dataset.lang)));
 
-  try{
-    setLang(lang);
-  }catch(error){
-    console.error('[portfolio] language initialization failed:', error);
-    document.documentElement.lang = 'id';
-    document.documentElement.dir = 'ltr';
+backButton.addEventListener('click',()=>showScreen('homeScreen'));
+
+document.addEventListener('keydown',event=>{
+  if(currentScreen === 'homeScreen'){
+    if(event.key === 'ArrowDown'){
+      event.preventDefault();
+      updateMenu(menuIndex+1);
+    }else if(event.key === 'ArrowUp'){
+      event.preventDefault();
+      updateMenu(menuIndex-1);
+    }else if(event.key === 'Enter'){
+      event.preventDefault();
+      activateMenu();
+    }
+  }else if(currentScreen === 'projectsScreen'){
+    if(event.key === 'ArrowDown' || event.key === 'ArrowRight'){
+      event.preventDefault();
+      updateProject(projectIndex+1);
+    }else if(event.key === 'ArrowUp' || event.key === 'ArrowLeft'){
+      event.preventDefault();
+      updateProject(projectIndex-1);
+    }else if(event.key === 'Enter'){
+      event.preventDefault();
+      const link = $$('.project-detail')[projectIndex]?.querySelector('.detail-links a');
+      if(link) window.open(link.href,'_blank','noopener,noreferrer');
+    }
   }
-}
 
-window.addEventListener('error', event=>{
-  console.error('[portfolio] runtime error:', event.error || event.message);
-  // Startup/runtime errors must not keep the loading overlay visible.
-  finishBoot();
+  if(event.key === 'Escape' && currentScreen !== 'homeScreen'){
+    event.preventDefault();
+    showScreen('homeScreen');
+  }
 });
 
-window.addEventListener('unhandledrejection', event=>{
-  console.error('[portfolio] unhandled promise rejection:', event.reason);
-  finishBoot();
-});
-
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', initializeApp, {once:true});
-}else{
-  initializeApp();
-}
+applyLanguage(lang);
+updateMenu(0);
+updateProject(0);
+backButton.style.display = 'none';
