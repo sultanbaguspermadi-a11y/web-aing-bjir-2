@@ -74,9 +74,12 @@ const copy = {
 };
 
 let lang = 'id';
+let theme = 'dark';
 try {
   const stored = localStorage.getItem('portfolio-language');
   if (copy[stored]) lang = stored;
+  const storedTheme = localStorage.getItem('portfolio-theme');
+  if (storedTheme === 'light' || storedTheme === 'dark') theme = storedTheme;
 } catch (_) {}
 
 let currentScreen = 'homeScreen';
@@ -88,9 +91,53 @@ const screens = $$('.screen');
 const wipe = $('#wipe');
 const sideNumber = $('#sideNumber');
 const backButton = $('#backButton');
+const themeToggle = $('#themeToggle');
+const themeFlash = $('#themeFlash');
 
 function safeStoreLanguage(value){
   try { localStorage.setItem('portfolio-language', value); } catch (_) {}
+}
+
+function safeStoreTheme(value){
+  try { localStorage.setItem('portfolio-theme', value); } catch (_) {}
+}
+
+function applyTheme(next, animate=false){
+  theme = next === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = theme;
+  safeStoreTheme(theme);
+
+  if(themeToggle){
+    themeToggle.setAttribute('aria-pressed', String(theme === 'light'));
+    const label = $('#themeLabel');
+    if(label) label.textContent = theme === 'light' ? 'DARK' : 'LIGHT';
+  }
+
+  const meta = $('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content', theme === 'light' ? '#eaf7ff' : '#001b46');
+
+  if(animate && themeFlash){
+    themeFlash.classList.remove('active');
+    void themeFlash.offsetWidth;
+    themeFlash.classList.add('active');
+    setTimeout(()=>themeFlash.classList.remove('active'),760);
+  }
+}
+
+function toggleTheme(){
+  const next = theme === 'dark' ? 'light' : 'dark';
+
+  if(document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.startViewTransition(()=>applyTheme(next,false));
+    if(themeFlash){
+      themeFlash.classList.remove('active');
+      void themeFlash.offsetWidth;
+      themeFlash.classList.add('active');
+      setTimeout(()=>themeFlash.classList.remove('active'),760);
+    }
+  }else{
+    applyTheme(next,true);
+  }
 }
 
 function setText(id, value, multiline=false){
@@ -102,15 +149,17 @@ function setText(id, value, multiline=false){
 
 function applyLanguage(next){
   if(!copy[next]) next = 'id';
-  lang = next;
-  safeStoreLanguage(lang);
 
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const update = ()=>{
+    lang = next;
+    safeStoreLanguage(lang);
 
-  $$('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-  const c = copy[lang];
+    $('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+    const c = copy[lang];
   setText('homeEyebrow', c.homeEyebrow);
   setText('homeTitle', c.homeTitle, true);
   setText('homeArabic', c.homeArabic);
@@ -134,7 +183,14 @@ function applyLanguage(next){
   c.focus.forEach((text,i)=>setText('focus'+(i+1),text));
   setText('hudNavigate', c.nav);
   setText('hudConfirm', c.confirm);
-  setText('hudBack', c.back);
+    setText('hudBack', c.back);
+  };
+
+  if(document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.startViewTransition(update);
+  }else{
+    update();
+  }
 }
 
 function updateMenu(index){
@@ -189,20 +245,48 @@ function updateProject(index){
 }
 
 menuItems.forEach((item,i)=>{
-  item.addEventListener('mouseenter',()=>updateMenu(i));
+  item.addEventListener('pointerenter',()=>updateMenu(i));
+  item.addEventListener('focus',()=>updateMenu(i));
   if(item.dataset.target){
-    item.addEventListener('click',()=>showScreen(item.dataset.target));
+    item.addEventListener('click',(event)=>{
+      event.preventDefault();
+      updateMenu(i);
+      showScreen(item.dataset.target);
+    });
   }
 });
 
-$$('.project-card').forEach((card,i)=>{
-  card.addEventListener('mouseenter',()=>updateProject(i));
-  card.addEventListener('click',()=>updateProject(i));
+$('.project-card').forEach((card,i)=>{
+  card.addEventListener('pointerenter',()=>updateProject(i));
+  card.addEventListener('focus',()=>updateProject(i));
+  card.addEventListener('click',(event)=>{
+    event.preventDefault();
+    updateProject(i);
+  });
 });
 
-$$('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>applyLanguage(btn.dataset.lang)));
+$('.lang-btn').forEach(btn=>btn.addEventListener('click',(event)=>{
+  event.preventDefault();
+  event.stopPropagation();
+  applyLanguage(btn.dataset.lang);
+}));
 
-backButton.addEventListener('click',()=>showScreen('homeScreen'));
+themeToggle?.addEventListener('click',(event)=>{
+  event.preventDefault();
+  event.stopPropagation();
+  toggleTheme();
+});
+
+backButton.addEventListener('click',(event)=>{
+  event.preventDefault();
+  showScreen('homeScreen');
+});
+
+$('.detail-links a,.menu-option[href]').forEach(link=>{
+  link.addEventListener('click',event=>{
+    event.stopPropagation();
+  });
+});
 
 document.addEventListener('keydown',event=>{
   if(currentScreen === 'homeScreen'){
@@ -236,7 +320,25 @@ document.addEventListener('keydown',event=>{
   }
 });
 
+applyTheme(theme,false);
 applyLanguage(lang);
 updateMenu(0);
 updateProject(0);
 backButton.style.display = 'none';
+
+if(matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.addEventListener('pointermove',event=>{
+    const x = event.clientX / innerWidth - .5;
+    const y = event.clientY / innerHeight - .5;
+    document.documentElement.style.setProperty('--pointer-x', x.toFixed(3));
+    document.documentElement.style.setProperty('--pointer-y', y.toFixed(3));
+
+    const orb = $('.orb');
+    if(orb) orb.style.transform = `translate(${x*24}px,${y*18}px)`;
+
+    const activeVisual = $('.project-detail.active .detail-visual');
+    if(activeVisual){
+      activeVisual.style.transform = `perspective(1100px) rotateX(${y*-1.8}deg) rotateY(${x*2.2}deg)`;
+    }
+  });
+}
