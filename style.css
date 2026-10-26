@@ -36,3 +36,23 @@ html[dir="rtl"] body{font-family:var(--arabic-ui)}html[dir="rtl"] .brand{text-al
     visibility:visible!important;
   }
 }
+.anime-hero{position:absolute;right:17%;bottom:-2vh;width:min(31vw,500px);height:min(78vh,820px);z-index:2;pointer-events:none;opacity:.92;animation:animeEnter .95s .28s cubic-bezier(.16,1,.3,1) both}
+.anime-art{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 24px 42px rgba(4,31,52,.16))}
+.anime-glow{position:absolute;left:52%;top:40%;width:72%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(111,211,255,.34) 0%,rgba(111,211,255,.13) 40%,rgba(111,211,255,0) 72%);filter:blur(3px);animation:animeGlow 4.8s ease-in-out infinite}
+.anime-person{transform-origin:50% 88%;animation:animeFloat 5.8s ease-in-out infinite}
+.anime-headset{animation:animeHeadset 3.4s ease-in-out infinite}
+.anime-note{position:absolute;right:3%;bottom:7%;display:flex;flex-direction:column;align-items:flex-end;gap:3px;color:var(--ink);mix-blend-mode:multiply}
+.anime-note span{font-size:8px;letter-spacing:.16em;font-weight:800}.anime-note strong{font-family:var(--arabic-kufi);font-size:14px}
+.home .hero-copy,.home .menu,.home-foot{position:relative;z-index:5}
+@keyframes animeEnter{from{opacity:0;transform:translateY(56px) scale(.97)}to{opacity:.92;transform:translateY(0) scale(1)}}
+@keyframes animeFloat{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-9px) rotate(.5deg)}}
+@keyframes animeGlow{0%,100%{transform:translate(-50%,-50%) scale(.96);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.05);opacity:1}}
+@keyframes animeHeadset{0%,100%{opacity:.86}50%{opacity:1}}
+@media(max-width:1180px){.anime-hero{right:8%;width:min(38vw,470px);opacity:.72}}
+@media(max-width:980px){.anime-hero{position:relative;right:auto;bottom:auto;width:min(70vw,500px);height:auto;margin:-52px auto -12px;opacity:.88}.anime-note{right:2%;bottom:8%}}
+@media(max-width:640px){.anime-hero{width:min(86vw,420px);margin:-22px auto -20px}.anime-note{display:none}}
+html[dir="rtl"] .anime-hero{right:auto;left:17%}
+html[dir="rtl"] .anime-note{right:auto;left:3%;align-items:flex-start}
+@media(max-width:1180px){html[dir="rtl"] .anime-hero{left:8%;right:auto}}
+@media(max-width:980px){html[dir="rtl"] .anime-hero{left:auto;right:auto}}
+@media(prefers-reduced-motion:reduce){.anime-hero,.anime-person,.anime-headset,.anime-glow{animation:none!important}}
