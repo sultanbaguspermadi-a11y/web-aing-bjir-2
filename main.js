@@ -33,24 +33,99 @@ const copy = {
   }
 };
 
-let lang = localStorage.getItem('portfolio-language') || 'id';
+function readStoredLanguage(){
+  try{
+    const stored = localStorage.getItem('portfolio-language');
+    return copy[stored] ? stored : 'id';
+  }catch(error){
+    console.warn('[portfolio] localStorage read unavailable:', error);
+    return 'id';
+  }
+}
+
+function storeLanguage(value){
+  try{
+    localStorage.setItem('portfolio-language', value);
+  }catch(error){
+    console.warn('[portfolio] localStorage write unavailable:', error);
+  }
+}
+
+let lang = readStoredLanguage();
 let currentScreen = 'home';
 let menuIndex = 0;
 let projectIndex = 0;
 const menuItems = $$('.menu-item');
 
+let bootFinished = false;
+
+function finishBoot(){
+  if(bootFinished) return;
+  bootFinished = true;
+
+  const bootScreen = $('#boot');
+  const app = $('#app');
+
+  if(app) app.classList.remove('is-loading');
+  if(bootScreen){
+    bootScreen.classList.add('hide');
+    bootScreen.setAttribute('aria-hidden','true');
+
+    // Animation is decorative; never let it block access to the app.
+    setTimeout(()=>{
+      bootScreen.style.display = 'none';
+    }, 1100);
+  }
+}
+
 function boot(){
-  const bar=$('#bootBar'),pct=$('#bootPct'),boot=$('#boot'); let p=0;
-  const timer=setInterval(()=>{ p += Math.ceil(Math.random()*9); if(p>=100){p=100;clearInterval(timer);setTimeout(()=>{boot.classList.add('hide');$('#app').classList.remove('is-loading')},220)} bar.style.width=p+'%';pct.textContent=p+'%';},55);
+  const bar = $('#bootBar');
+  const pct = $('#bootPct');
+
+  // Hard failsafe: even if a browser blocks an API or another feature errors,
+  // the loading screen must never trap the visitor.
+  const failsafe = setTimeout(finishBoot, 3200);
+
+  if(!bar || !pct || !$('#boot') || !$('#app')){
+    clearTimeout(failsafe);
+    finishBoot();
+    return;
+  }
+
+  let p = 0;
+  const timer = setInterval(()=>{
+    p = Math.min(100, p + Math.ceil(Math.random()*9));
+    bar.style.width = p + '%';
+    pct.textContent = p + '%';
+
+    if(p >= 100){
+      clearInterval(timer);
+      setTimeout(()=>{
+        clearTimeout(failsafe);
+        finishBoot();
+      }, 220);
+    }
+  }, 55);
 }
 
 function setLang(next){
-  lang=next; localStorage.setItem('portfolio-language',lang);
+  lang=copy[next] ? next : 'id'; storeLanguage(lang);
   document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr';
   $$('.lang').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
   const c=copy[lang];
   const map={heroEyebrow:c.eyebrow,heroLine1:c.h1,heroLine2:c.h2,heroLine3:c.h3,heroDesc:c.desc,menuProjects:c.projects,menuAbout:c.about,menuHint:c.hint,statusCopy:c.status,worksTitle:c.works,backProjects:c.back,backAbout:c.back,lughotiDesc:c.lughoti,scrabbleDesc:c.scrabble,lughotiOpen:c.open,scrabbleOpen:c.open,hudNavigate:c.nav,hudOpen:c.hudOpen,hudBack:c.back,aboutKicker:c.aboutK,aboutArabic:c.aboutAr,aboutBody:c.aboutBody};
-  Object.entries(map).forEach(([id,val])=>{ const el=$('#'+id); if(el){el.animate([{opacity:.2,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:320,easing:'ease-out'});el.textContent=val;}});
+  Object.entries(map).forEach(([id,val])=>{
+    const el=$('#'+id);
+    if(el){
+      if(typeof el.animate === 'function' && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+        el.animate(
+          [{opacity:.2,transform:'translateY(6px)'},{opacity:1,transform:'none'}],
+          {duration:320,easing:'ease-out'}
+        );
+      }
+      el.textContent=val;
+    }
+  });
   $('#aboutTitle').innerHTML=c.aboutTitle.replaceAll('\n','<br>');
   const lm=$('#lughotiMeta'), sm=$('#scrabbleMeta');lm.innerHTML=c.lughotiMeta.map(x=>`<span>${x}</span>`).join('');sm.innerHTML=c.scrabbleMeta.map(x=>`<span>${x}</span>`).join('');
   c.focus.forEach((x,i)=>$('#focus'+['One','Two','Three','Four'][i]).textContent=x);
@@ -88,4 +163,33 @@ if(matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:
   document.addEventListener('pointermove',e=>{const x=(e.clientX/innerWidth-.5),y=(e.clientY/innerHeight-.5);$('.orb-a').style.transform=`translate(${x*22}px,${y*18}px)`;$('.orb-b').style.transform=`translate(${-x*16}px,${-y*12}px)`;const activeVisual=$('.project-panel.active .project-visual');if(activeVisual) activeVisual.style.transform=`perspective(1200px) rotateX(${y*-1.4}deg) rotateY(${x*1.8}deg)`;});
 }
 
-setLang(lang);boot();
+function initializeApp(){
+  // Start the boot sequence first so localization or optional interactions
+  // cannot leave the visitor stuck behind the loader.
+  boot();
+
+  try{
+    setLang(lang);
+  }catch(error){
+    console.error('[portfolio] language initialization failed:', error);
+    document.documentElement.lang = 'id';
+    document.documentElement.dir = 'ltr';
+  }
+}
+
+window.addEventListener('error', event=>{
+  console.error('[portfolio] runtime error:', event.error || event.message);
+  // Startup/runtime errors must not keep the loading overlay visible.
+  finishBoot();
+});
+
+window.addEventListener('unhandledrejection', event=>{
+  console.error('[portfolio] unhandled promise rejection:', event.reason);
+  finishBoot();
+});
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initializeApp, {once:true});
+}else{
+  initializeApp();
+}
