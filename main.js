@@ -237,7 +237,7 @@ function activateMenu(){
 
 function updateProject(index){
   projectIndex = (index + 2) % 2;
-  $$$('.project-card').forEach((card,i)=>{
+  $('.project-card').forEach((card,i)=>{
     card.classList.toggle('active',i===projectIndex);
     card.setAttribute('aria-selected',String(i===projectIndex));
   });
