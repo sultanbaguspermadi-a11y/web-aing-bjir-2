@@ -157,7 +157,7 @@ function applyLanguage(next){
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-    $('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+    $$('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
 
     const c = copy[lang];
   setText('homeEyebrow', c.homeEyebrow);
@@ -237,7 +237,7 @@ function activateMenu(){
 
 function updateProject(index){
   projectIndex = (index + 2) % 2;
-  $$('.project-card').forEach((card,i)=>{
+  $$$('.project-card').forEach((card,i)=>{
     card.classList.toggle('active',i===projectIndex);
     card.setAttribute('aria-selected',String(i===projectIndex));
   });
@@ -256,7 +256,7 @@ menuItems.forEach((item,i)=>{
   }
 });
 
-$('.project-card').forEach((card,i)=>{
+$$('.project-card').forEach((card,i)=>{
   card.addEventListener('pointerenter',()=>updateProject(i));
   card.addEventListener('focus',()=>updateProject(i));
   card.addEventListener('click',(event)=>{
@@ -265,7 +265,7 @@ $('.project-card').forEach((card,i)=>{
   });
 });
 
-$('.lang-btn').forEach(btn=>btn.addEventListener('click',(event)=>{
+$$('.lang-btn').forEach(btn=>btn.addEventListener('click',(event)=>{
   event.preventDefault();
   event.stopPropagation();
   applyLanguage(btn.dataset.lang);
@@ -282,7 +282,7 @@ backButton.addEventListener('click',(event)=>{
   showScreen('homeScreen');
 });
 
-$('.detail-links a,.menu-option[href]').forEach(link=>{
+$$('.detail-links a,.menu-option[href]').forEach(link=>{
   link.addEventListener('click',event=>{
     event.stopPropagation();
   });
