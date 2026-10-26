@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a2b4a" />
+  <title>Sultan Bagus Permadi — Interactive Arabic Digital Portfolio</title>
+  <meta name="description" content="Interactive portfolio of Sultan Bagus Permadi featuring Lughoti Vokasi and Arabic Scrabble." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Geist:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="boot" class="boot" aria-hidden="true">
+    <div class="boot-grid"></div>
+    <div class="boot-copy">
+      <span class="boot-mark">SBP / 26</span>
+      <h1>INITIALIZING<br><span>PORTFOLIO SYSTEM</span></h1>
+      <div class="boot-row"><div class="boot-track"><div id="bootBar" class="boot-bar"></div></div><span id="bootPct">0%</span></div>
+    </div>
+  </div>
+
+  <main id="app" class="app is-loading">
+    <div class="noise" aria-hidden="true"></div>
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="arabic-watermark" aria-hidden="true">مشاريع</div>
+
+    <header class="topbar">
+      <button id="brandBtn" class="brand" aria-label="Home">
+        <span class="brand-name">SULTAN BAGUS PERMADI</span>
+        <span class="brand-meta">INTERACTIVE PORTFOLIO · 2026</span>
+      </button>
+      <div class="top-actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button data-lang="id" class="lang active">ID</button>
+          <button data-lang="en" class="lang">EN</button>
+          <button data-lang="ar" class="lang">العربية</button>
+        </div>
+        <a class="github-link" href="https://github.com/DAXEI08" target="_blank" rel="noreferrer">GITHUB ↗</a>
+      </div>
+    </header>
+
+    <section id="home" class="screen home active" aria-hidden="false">
+      <div class="home-grid">
+        <div class="hero-copy">
+          <div class="eyebrow-wrap"><p id="heroEyebrow" class="eyebrow reveal-line">KARYA PILIHAN · 2026</p></div>
+          <h1 class="hero-title" aria-label="Media Pembelajaran Bahasa Arab dan Eksperimen Digital">
+            <span class="hero-line"><span id="heroLine1">MEDIA PEMBELAJARAN</span></span>
+            <span class="hero-line"><span id="heroLine2">BAHASA ARAB</span></span>
+            <span class="hero-line accent"><span id="heroLine3">& EKSPERIMEN DIGITAL</span></span>
+          </h1>
+          <p id="heroDesc" class="hero-desc">Portofolio akademik dan interaktif yang mengeksplorasi pembelajaran bahasa Arab, teknologi pendidikan, dan desain antarmuka.</p>
+        </div>
+
+        <nav class="menu" aria-label="Main menu">
+          <button class="menu-item active" data-target="projects" data-index="01">
+            <span class="menu-index">01</span><span id="menuProjects" class="menu-label">PROYEK</span><span class="menu-arrow">↗</span>
+          </button>
+          <button class="menu-item" data-target="about" data-index="02">
+            <span class="menu-index">02</span><span id="menuAbout" class="menu-label">TENTANG</span><span class="menu-arrow">↗</span>
+          </button>
+          <a class="menu-item" href="https://github.com/DAXEI08" target="_blank" rel="noreferrer" data-index="03">
+            <span class="menu-index">03</span><span class="menu-label">GITHUB</span><span class="menu-arrow">↗</span>
+          </a>
+          <div class="menu-rule"></div>
+          <p id="menuHint" class="menu-hint">Gunakan ↑ ↓ dan ENTER, atau klik.</p>
+        </nav>
+      </div>
+
+      <div class="home-foot">
+        <div class="status"><span class="status-dot"></span><span id="statusCopy">READY / DUA PROYEK UTAMA</span></div>
+        <div id="bigIndex" class="big-index">01</div>
+      </div>
+    </section>
+
+    <section id="projects" class="screen projects" aria-hidden="true">
+      <div class="section-head">
+        <button class="back-btn" data-back><span>←</span><span id="backProjects">KEMBALI</span></button>
+        <div class="section-kicker"><span id="worksTitle">KARYA PILIHAN</span><span>02</span></div>
+      </div>
+
+      <div class="project-stage">
+        <aside class="project-list" role="tablist" aria-label="Projects">
+          <button class="project-tab active" data-project="0" role="tab" aria-selected="true"><span>01</span><strong>Lughoti Vokasi</strong></button>
+          <button class="project-tab" data-project="1" role="tab" aria-selected="false"><span>02</span><strong>Arabic Scrabble</strong></button>
+        </aside>
+
+        <article class="project-panel active" data-panel="0">
+          <div class="project-visual visual-lughoti">
+            <div class="visual-grid"></div>
+            <div class="phone-shell">
+              <div class="phone-top"></div>
+              <div class="phone-screen">
+                <div class="mini-brand">لغتي</div>
+                <div class="mini-title">Lughoti Vokasi</div>
+                <div class="mini-search">ابحث عن المفردات...</div>
+                <div class="mini-row"><span>01</span><b>RPL</b><i>→</i></div>
+                <div class="mini-row"><span>02</span><b>TSM</b><i>→</i></div>
+                <div class="mini-row"><span>03</span><b>AKL</b><i>→</i></div>
+              </div>
+            </div>
+            <div class="visual-tag">VOCATIONAL ARABIC DICTIONARY</div>
+          </div>
+          <div class="project-copy">
+            <div class="project-number">01 / 02</div>
+            <h2>Lughoti<br>Vokasi</h2>
+            <p id="lughotiDesc">Kamus digital bahasa Arab untuk siswa SMK dengan kosakata berbasis bidang keahlian dan pengalaman mobile-first.</p>
+            <div id="lughotiMeta" class="chips"><span>Pembelajaran Arab</span><span>EdTech</span><span>Web App</span></div>
+            <div class="project-actions">
+              <a id="lughotiOpen" href="https://lughoti-vokasi-final.vercel.app/" target="_blank" rel="noreferrer">BUKA PROYEK ↗</a>
+              <a href="https://github.com/DAXEI08/lughoti-vokasi-redesign" target="_blank" rel="noreferrer">GITHUB ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-panel" data-panel="1">
+          <div class="project-visual visual-scrabble">
+            <div class="scrabble-board" aria-hidden="true"></div>
+            <div class="rack rack-top"><span>س</span><span>ك</span><span>ر</span><span>ا</span><span>ب</span><span>ل</span></div>
+            <div class="rack rack-bottom"><span>ع</span><span>ر</span><span>ب</span><span>ي</span></div>
+            <div class="visual-tag dark">ARABIC WORD BOARD GAME</div>
+          </div>
+          <div class="project-copy">
+            <div class="project-number">02 / 02</div>
+            <h2>Arabic<br>Scrabble</h2>
+            <p id="scrabbleDesc">Permainan papan kata bahasa Arab yang dapat dikonfigurasi, berfokus pada multiplayer lokal, interaksi huruf, dan fleksibilitas layout.</p>
+            <div id="scrabbleMeta" class="chips"><span>Permainan Kata Arab</span><span>Learning Media</span><span>Local Multiplayer</span></div>
+            <div class="project-actions">
+              <a id="scrabbleOpen" href="https://github.com/DAXEI08/eas-test" target="_blank" rel="noreferrer">BUKA PROYEK ↗</a>
+              <a href="https://github.com/DAXEI08/eas-test" target="_blank" rel="noreferrer">GITHUB ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="hud"><span>↑ ↓</span><b id="hudNavigate">NAVIGASI</b><span>ENTER</span><b id="hudOpen">BUKA</b><span>ESC</span><b id="hudBack">KEMBALI</b></div>
+    </section>
+
+    <section id="about" class="screen about" aria-hidden="true">
+      <div class="section-head">
+        <button class="back-btn" data-back><span>←</span><span id="backAbout">KEMBALI</span></button>
+        <div class="section-kicker"><span id="aboutKicker">TENTANG KARYA</span><span>02</span></div>
+      </div>
+      <div class="about-layout">
+        <div class="about-title-wrap">
+          <div id="aboutArabic" class="about-arabic">بين اللغة والتقنية</div>
+          <h2 id="aboutTitle">Bahasa,<br>teknologi,<br>dan pengalaman belajar.</h2>
+        </div>
+        <div class="about-copy">
+          <p id="aboutBody">Saya merancang dan mengembangkan pengalaman belajar digital yang berfokus terutama pada pembelajaran bahasa Arab. Proyek saya menggabungkan desain pembelajaran, media pendidikan, pengembangan web, dan eksperimen antarmuka.</p>
+          <div class="about-grid">
+            <div><span>01</span><strong id="focusOne">Pendidikan Bahasa Arab</strong></div>
+            <div><span>02</span><strong id="focusTwo">Teknologi Pendidikan</strong></div>
+            <div><span>03</span><strong id="focusThree">Interactive Learning</strong></div>
+            <div><span>04</span><strong id="focusFour">UI / UX Experimentation</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="signature">SULTAN BAGUS PERMADI</div>
+    </section>
+
+    <div id="transition" class="transition-layer" aria-hidden="true"><div class="transition-slice s1"></div><div class="transition-slice s2"></div><div class="transition-slice s3"></div></div>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
