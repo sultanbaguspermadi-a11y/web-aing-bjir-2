@@ -27,10 +27,16 @@
         <span class="identity-line"></span>
       </div>
 
-      <div class="language-control" aria-label="Language selector">
-        <button class="lang-btn active" data-lang="id">ID</button>
-        <button class="lang-btn" data-lang="en">EN</button>
-        <button class="lang-btn lang-ar" data-lang="ar">العربية</button>
+      <div class="top-controls">
+        <div class="language-control" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="id" type="button">ID</button>
+          <button class="lang-btn" data-lang="en" type="button">EN</button>
+          <button class="lang-btn lang-ar" data-lang="ar" type="button">العربية</button>
+        </div>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
+          <span class="theme-orbit" aria-hidden="true"><i></i></span>
+          <span id="themeLabel">LIGHT</span>
+        </button>
       </div>
     </header>
 
@@ -180,7 +186,9 @@
 
     <div id="wipe" class="wipe" aria-hidden="true">
       <span></span><span></span><span></span><span></span>
+      <i class="wipe-flare"></i>
     </div>
+    <div id="themeFlash" class="theme-flash" aria-hidden="true"></div>
   </div>
 
   <script src="main.js"></script>
