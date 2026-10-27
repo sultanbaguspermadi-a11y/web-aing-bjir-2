@@ -1,0 +1,466 @@
+@import "tailwindcss";
+
+@theme {
+  --color-n0: #00050f;
+  --color-n1: #001233;
+  --color-n2: #0a2a66;
+  --color-blue: #2c7dff;
+  --color-sky: #6fc3ff;
+  --color-cyan: #7de6fd;
+  --color-ice: #eaf8ff;
+  --color-lughoti: #8ecdf4;
+  --color-scrabble: #e9b44c;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography. Latin: heavy italic display (Kanit). Arabic: upright     */
+/* Kufi. Arabic is NEVER italicised, skewed or letter-spaced: only the  */
+/* shapes behind the text are slanted (clip-path), never the glyphs.    */
+/* ------------------------------------------------------------------ */
+:root {
+  --gutter: clamp(1.1rem, 4vw, 4rem);
+
+  --ff-ui: var(--font-plex-sans), "Helvetica Neue", Arial, sans-serif;
+  --ff-display: var(--font-kanit), "Arial Black", Impact, sans-serif;
+  --ff-literary: var(--ff-ui);
+  --ff-annot: var(--ff-display);
+  --ff-nastaliq: var(--font-ar-nastaliq), "Noto Nastaliq Urdu", var(--font-ar-naskh), serif;
+
+  --case: uppercase;
+  --display-style: italic;
+  --display-weight: 800;
+  --display-lh: 0.95;
+  --display-track: 0.01em;
+  --lh-body: 1.6;
+  --bg-a: #0b2a6b;
+}
+
+html[lang="ar"] {
+  --ff-ui: var(--font-ar-ui), var(--font-plex-sans), "Noto Sans Arabic", system-ui, sans-serif;
+  --ff-display: var(--font-ar-kufi), var(--font-ar-ui), var(--font-plex-sans), sans-serif;
+  --ff-literary: var(--font-ar-naskh), "Noto Naskh Arabic", serif;
+  --ff-annot: var(--font-ar-ruqah), "Aref Ruqaa", var(--font-ar-naskh), serif;
+
+  --case: none;
+  --display-style: normal;
+  --display-weight: 700;
+  --display-lh: 1.35;
+  --display-track: 0em;
+  --lh-body: 1.9;
+}
+
+html {
+  background: var(--color-n0);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-n0);
+  color: var(--color-ice);
+  font-family: var(--ff-ui);
+  line-height: var(--lh-body);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-cyan);
+  color: var(--color-n1);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+@layer components {
+  .ff-ui {
+    font-family: var(--ff-ui);
+    line-height: var(--lh-body);
+  }
+  .ff-display {
+    font-family: var(--ff-display);
+    font-style: var(--display-style);
+    font-weight: var(--display-weight);
+    line-height: var(--display-lh);
+    letter-spacing: var(--display-track);
+    text-transform: var(--case);
+  }
+  .ff-literary {
+    font-family: var(--ff-literary);
+    line-height: 1.6;
+  }
+  html[lang="ar"] .ff-literary {
+    line-height: 2;
+  }
+  .ff-annot {
+    font-family: var(--ff-annot);
+    font-style: var(--display-style);
+    font-weight: 700;
+    text-transform: var(--case);
+    letter-spacing: 0.04em;
+  }
+  html[lang="ar"] .ff-annot {
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.8;
+  }
+  /* Small HUD labels. */
+  .ff-meta {
+    font-family: var(--ff-display);
+    font-style: var(--display-style);
+    font-weight: 700;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    text-transform: var(--case);
+    letter-spacing: 0.08em;
+  }
+  html[lang="ar"] .ff-meta {
+    letter-spacing: 0;
+    font-size: 0.85rem;
+  }
+  /* Expressive Nastaliq (Arabic only): tall forms need generous leading. */
+  .face-nastaliq {
+    font-family: var(--ff-nastaliq);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.9;
+    font-size: 0.82em;
+    text-transform: none;
+  }
+
+  /* ---------------- Shared slanted shapes (clip-path only) ---------------- */
+  .slant {
+    --sl: 1.1rem;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--sl)) 100%, 0 100%);
+  }
+  [dir="rtl"] .slant {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, var(--sl) 100%);
+  }
+  .para {
+    --sl: 1.1rem;
+    clip-path: polygon(var(--sl) 0, 100% 0, calc(100% - var(--sl)) 100%, 0 100%);
+  }
+  [dir="rtl"] .para {
+    clip-path: polygon(0 0, calc(100% - var(--sl)) 0, 100% 100%, var(--sl) 100%);
+  }
+
+  /* ---------------- Menu / list items ---------------- */
+  .p3-item {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    text-align: start;
+    color: var(--color-ice);
+    transition:
+      transform 0.38s var(--ease-out),
+      color 0.18s linear;
+    --sl: 1rem;
+  }
+  .p3-item::before,
+  .p3-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--sl)) 100%, 0 100%);
+  }
+  [dir="rtl"] .p3-item::before,
+  [dir="rtl"] .p3-item::after {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, var(--sl) 100%);
+  }
+  .p3-item::before {
+    background: rgb(0 18 51 / 0.82);
+    box-shadow: inset 4px 0 0 var(--color-sky);
+    transition: background 0.18s linear;
+  }
+  [dir="rtl"] .p3-item::before {
+    box-shadow: inset -4px 0 0 var(--color-sky);
+  }
+  /* Offset "shadow" shape that appears behind the selected item. */
+  .p3-item::after {
+    z-index: -2;
+    background: var(--accent, var(--color-cyan));
+    transform: translate(0.7rem, 0.5rem);
+    opacity: 0;
+    transition: opacity 0.18s linear;
+  }
+  [dir="rtl"] .p3-item::after {
+    transform: translate(-0.7rem, 0.5rem);
+  }
+  .p3-item[data-active="true"] {
+    color: var(--color-n1);
+    transform: translateX(1.2rem) scale(1.04);
+  }
+  [dir="rtl"] .p3-item[data-active="true"] {
+    transform: translateX(-1.2rem) scale(1.04);
+  }
+  .p3-item[data-active="true"]::before {
+    background: #fff;
+    box-shadow: inset 5px 0 0 var(--color-blue);
+  }
+  [dir="rtl"] .p3-item[data-active="true"]::before {
+    box-shadow: inset -5px 0 0 var(--color-blue);
+  }
+  .p3-item[data-active="true"]::after {
+    opacity: 1;
+  }
+  .p3-item:focus-visible {
+    outline: none;
+  }
+
+  /* Small screens: keep the selected item inside the viewport. */
+  @media (max-width: 1023px) {
+    .p3-item[data-active="true"],
+    [dir="rtl"] .p3-item[data-active="true"] {
+      transform: scale(1.02);
+    }
+  }
+
+  /* ---------------- Buttons ---------------- */
+  .p3-btn {
+    --sl: 0.9rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.8rem 2rem 0.8rem 1.4rem;
+    background: #fff;
+    color: var(--color-n1);
+    font-family: var(--ff-display);
+    font-style: var(--display-style);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: var(--case);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--sl)) 100%, 0 100%);
+    transition:
+      background 0.2s linear,
+      transform 0.35s var(--ease-out);
+  }
+  [dir="rtl"] .p3-btn {
+    padding: 0.8rem 1.4rem 0.8rem 2rem;
+    letter-spacing: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, var(--sl) 100%);
+  }
+  .p3-btn:hover,
+  .p3-btn:focus-visible {
+    background: var(--color-cyan);
+    transform: translateX(0.3rem);
+  }
+  [dir="rtl"] .p3-btn:hover,
+  [dir="rtl"] .p3-btn:focus-visible {
+    transform: translateX(-0.3rem);
+  }
+
+  /* ---------------- Shard header banner ---------------- */
+  .shard-header {
+    position: relative;
+    height: clamp(4.2rem, 8.5vw, 6.4rem);
+    width: min(100%, 34rem);
+    margin-block: 1.2rem 1.6rem;
+  }
+  .shard-shapes {
+    position: absolute;
+    inset: 0;
+  }
+  [dir="rtl"] .shard-shapes {
+    transform: scaleX(-1);
+  }
+  .shard-back {
+    position: absolute;
+    inset: 0.55rem -0.4rem -0.55rem -4rem;
+    background: var(--color-sky);
+    clip-path: polygon(0 0, 97% 0, 100% 100%, 0 100%);
+  }
+  .shard-main {
+    position: absolute;
+    inset: 0 0 0 -4rem;
+    background: var(--color-n1);
+    clip-path: polygon(0 6%, 100% 0, 91% 100%, 0 94%);
+  }
+  .shard-peak {
+    position: absolute;
+    top: -0.9rem;
+    inset-inline-end: 2.4rem;
+    width: 5.5rem;
+    height: 1.6rem;
+    background: var(--color-cyan);
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+  .shard-bit {
+    position: absolute;
+    background: var(--color-cyan);
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+  .shard-title {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-inline: 1.6rem 2rem;
+    color: #fff;
+    font-size: clamp(2.1rem, 5vw, 3.5rem);
+  }
+
+  /* ---------------- Background ("Dark Hour") ---------------- */
+  .bg-root {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 72% 18%, var(--bg-a) 0%, #001233 46%, #00050f 100%);
+  }
+  .bg-lines {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: repeating-linear-gradient(115deg, #fff 0 1px, transparent 1px 34px);
+  }
+  .bg-shard {
+    position: absolute;
+    background: linear-gradient(160deg, rgb(44 125 255 / 0.2), rgb(44 125 255 / 0));
+    animation: drift 42s ease-in-out infinite alternate;
+  }
+  .bg-gl {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .bg-root[data-gl="on"] .bg-gl {
+    opacity: 1;
+  }
+  .bg-vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(0 5 15 / 0.7), transparent 22%, transparent 78%, rgb(0 5 15 / 0.7));
+  }
+  .bg-moon {
+    position: absolute;
+    inset-block-start: 4%;
+    inset-inline-end: 6%;
+    width: clamp(15rem, 34vw, 30rem);
+    opacity: 0.3;
+    filter: drop-shadow(0 0 3rem rgb(125 230 253 / 0.25));
+    transition: transform 0.9s var(--ease-out);
+  }
+  [data-screen="projects"] .bg-moon {
+    transform: translate(-6vw, 26vh) scale(0.7);
+  }
+  [data-screen="about"] .bg-moon {
+    transform: translate(-30vw, 8vh) scale(0.8);
+  }
+  [data-screen="contact"] .bg-moon,
+  [data-screen="language"] .bg-moon {
+    transform: translate(4vw, 34vh) scale(0.62);
+    opacity: 0.2;
+  }
+  [dir="rtl"][data-screen="projects"] .bg-moon {
+    transform: translate(6vw, 26vh) scale(0.7);
+  }
+  [dir="rtl"][data-screen="about"] .bg-moon {
+    transform: translate(30vw, 8vh) scale(0.8);
+  }
+  [dir="rtl"][data-screen="contact"] .bg-moon,
+  [dir="rtl"][data-screen="language"] .bg-moon {
+    transform: translate(-4vw, 34vh) scale(0.62);
+  }
+  [data-screen="projects"] { --bg-a: #0a3a8c; }
+  [data-screen="about"] { --bg-a: #083a6e; }
+  [data-screen="contact"] { --bg-a: #04264f; }
+  [data-screen="language"] { --bg-a: #0a2a66; }
+
+  /* Ghost number / word behind content. */
+  .ghost {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    font-family: var(--ff-display);
+    font-style: var(--display-style);
+    font-weight: var(--display-weight);
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 2px rgb(125 230 253 / 0.32);
+  }
+
+  .screen-in {
+    animation: screen-in 0.35s var(--ease-out) both;
+  }
+
+  .skip-link {
+    position: fixed;
+    inset-inline-start: 1rem;
+    top: 0.75rem;
+    z-index: 200;
+    padding: 0.6rem 1rem;
+    background: var(--color-cyan);
+    color: var(--color-n1);
+    font-weight: 600;
+    transform: translateY(-220%);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .skip-link:focus {
+    transform: none;
+  }
+
+  /* Touch devices have no keyboard: hide key caps. */
+  @media (hover: none) {
+    .keycaps {
+      display: none !important;
+    }
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-2%, 0, 0);
+  }
+  to {
+    transform: translate3d(3%, -2%, 0);
+  }
+}
+@keyframes screen-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.no-js-fallback {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-shard {
+    animation: none;
+  }
+  .bg-moon {
+    transition: none;
+  }
+  .p3-item,
+  .p3-btn {
+    transition: none;
+  }
+  .p3-item[data-active="true"],
+  [dir="rtl"] .p3-item[data-active="true"],
+  .p3-btn:hover,
+  [dir="rtl"] .p3-btn:hover {
+    transform: none;
+  }
+}
